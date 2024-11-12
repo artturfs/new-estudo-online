@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudo On-line</title>
+    <link rel="stylesheet" href="agenda.css">
+    <link rel="shortcut icon" href="estudo.png" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <li class="logo">Estudo <span>On</span>-line</li>
+        <ul class="nav-list">
+            <li class="nav-itens"><a href="index.html">HOME</a></li>
+            <li class="nav-itens"><a href="agenda.html">AGENDA</a></li>
+            <li class="nav-itens"><a href="atividades.html">ATIVIDADES</a></li>
+            <li class="nav-itens"><a href="cronograma.html">CRONOGRAMA</a></li>
+        </ul>
+    </header>
+
+    <center>
+        <!-- Seção para criar ou acessar um ambiente compartilhado -->
+        <section class="access-section">
+            <h2 style="margin-top: 200px;">Crie um novo código ou insira um código de acesso</h2>
+
+            <!-- Formulário para criar um novo código -->
+            <div>
+                <input type="text" id="new-code-input" placeholder="Novo código (ex: estudo2024)" />
+                <button id="create-code-button">Criar Código</button>
+            </div>
+
+            <!-- Formulário para acessar um código existente -->
+            <div>
+                <input type="text" id="access-code-input" placeholder="Código de acesso" />
+                <button id="access-code-button">Acessar</button>
+            </div>
+        </section>
+
+        <!-- Conteúdo específico do ambiente com o código -->
+        <section id="shared-content" style="display: none;">
+            <h2>Bem-vindo ao ambiente de <span id="current-code"></span></h2>
+            <p>Aqui você verá todos os dados salvos para o código atual em todas as abas.</p>
+            <!-- Esta seção estará presente em todas as páginas -->
+        </section>
+    </center>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const newCodeInput = document.getElementById("new-code-input");
+            const accessCodeInput = document.getElementById("access-code-input");
+            const createCodeButton = document.getElementById("create-code-button");
+            const accessCodeButton = document.getElementById("access-code-button");
+            const sharedContent = document.getElementById("shared-content");
+            const currentCodeSpan = document.getElementById("current-code");
+
+            let currentCode = null;
+
+            // Função para definir o código de acesso no localStorage
+            function setAccessCode(code) {
+                currentCode = code;
+                localStorage.setItem("currentAccessCode", code);
+                currentCodeSpan.textContent = code;
+                sharedContent.style.display = "block";
+                alert("Você agora está no ambiente do código: " + code);
+            }
+
+            // Evento para criar um novo código
+            createCodeButton.addEventListener("click", function () {
+                const newCode = newCodeInput.value.trim();
+                if (newCode) {
+                    setAccessCode(newCode);
+                    newCodeInput.value = ''; // Limpa o campo
+                } else {
+                    alert("Por favor, insira um código válido para criar.");
+                }
+            });
+
+            // Evento para acessar um código existente
+            accessCodeButton.addEventListener("click", function () {
+                const code = accessCodeInput.value.trim();
+                if (code) {
+                    setAccessCode(code);
+                    accessCodeInput.value = ''; // Limpa o campo
+                } else {
+                    alert("Por favor, insira um código válido para acessar.");
+                }
+            });
+
+            // Carregar código do ambiente atual ao abrir o site
+            const storedCode = localStorage.getItem("currentAccessCode");
+            if (storedCode) {
+                setAccessCode(storedCode);
+            }
+        });
+    </script>
+</body>
+</html>
